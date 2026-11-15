@@ -75,6 +75,15 @@ For migration from an existing RisuAI installation, see the [migration guide](do
 - **Multilingual UI**: Korean, English, Japanese, Chinese, and more
 
 
+## Network privacy
+
+PocketRisu does not report installation IDs, active users, visits, or usage analytics. Older `save/__instance_id` files are removed at startup. Diagnostic logs and token usage statistics stay on your own server.
+
+Update checks read public GitHub release metadata and compare versions locally, without sending your installed version, operating system, installation type, or language. Set `RISU_UPDATE_CHECK=false` to disable these checks. The former `RISU_UPDATE_URL` telemetry-worker override is no longer used. Supporter information is fetched only when you open the support dialog; UI fonts and math styles are served locally.
+
+AI providers, model catalogs, Realm downloads, and other enabled integrations still use the network for their features. User-installed plugins and remote content can make their own requests.
+
+
 ## Community & Contact
 
 - Bug reports / feature requests: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)

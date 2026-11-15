@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const REPO = 'PocketRisu/PocketRisu';
+const REPO = 'rainbuilt/PocketRisu-untracked';
 const ROOT = path.resolve(__dirname, '..');
 
 const isWin = process.platform === 'win32';

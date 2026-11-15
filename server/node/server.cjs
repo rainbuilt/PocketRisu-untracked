@@ -32,6 +32,8 @@ const {
     logger, installProcessHandlers, expressErrorMiddleware,
 } = require('./logs.cjs');
 const { createRequestLogs } = require('./request-logs.cjs');
+const { GITHUB_REPO, fetchLatestRelease: fetchGitHubRelease } = require('./release-check.cjs');
+const { normalizeHubRequestHeaders } = require('./hub-proxy-headers.cjs');
 const { applyPatch } = require('fast-json-patch');
 const { decodeRisuSave, encodeRisuSaveLegacy, calculateHash, normalizeJSON, normalizeForwardHeaders, hasRemoteBlocks } = require('./utils.cjs');
 const { createPatchHashCache, decodePointerSegment } = require('./patch-hash-cache.cjs');
@@ -1509,15 +1511,8 @@ if (existsSync(jwtSecretPath)) {
     writeFileSync(jwtSecretPath, jwtSecret, 'utf-8')
 }
 
-// ── Instance ID for anonymous usage analytics ────────────────────────────────
-const instanceIdPath = path.join(savePath, '__instance_id')
-let instanceId
-if (existsSync(instanceIdPath)) {
-    instanceId = readFileSync(instanceIdPath, 'utf-8').trim()
-} else {
-    instanceId = nodeCrypto.randomUUID()
-    writeFileSync(instanceIdPath, instanceId, 'utf-8')
-}
+// Remove the identifier left by older usage reporting. Never read or recreate it.
+try { unlinkSync(path.join(savePath, '__instance_id')); } catch { /* absent or read-only */ }
 
 const authCodePath = path.join(process.cwd(), 'save', '__authcode')
 const inlayDir = path.join(savePath, 'inlays')
@@ -1640,11 +1635,9 @@ function stopTunnel() {
 
 // ── Update check ─────────────────────────────────────────────────────────────
 const UPDATE_CHECK_DISABLED = process.env.RISU_UPDATE_CHECK === 'false';
-const UPDATE_CHECK_URL = process.env.RISU_UPDATE_URL || 'https://risu-update-worker.nodridan.workers.dev/check';
-const PUBLIC_STATS_URL = (process.env.RISU_UPDATE_URL || 'https://risu-update-worker.nodridan.workers.dev/check').replace(/\/check$/, '/api/public-stats');
 
 // Re-read on each call so non-portable updates (docker/git pull) without a
-// process restart don't keep reporting the old version to the update worker.
+// process restart compare releases against the current installed version.
 function getCurrentVersion() {
     try {
         const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf-8'));
@@ -1653,21 +1646,11 @@ function getCurrentVersion() {
 }
 
 // ── Deployment type & self-update helpers ─────────────────────────────────────
-const GITHUB_REPO = 'PocketRisu/PocketRisu';
-
 const deploymentType = (() => {
     // Only portable builds have the .portable marker (created by CI release workflow).
-    // Self-update is gated on this — all other types are inferred for analytics only.
-    // Wrapped in try/catch so unexpected filesystem errors can't crash server boot.
+    // Other installation details are unnecessary for deciding self-update support.
     try {
         if (existsSync(path.join(process.cwd(), '.portable'))) return 'portable';
-        if (existsSync(path.join(process.cwd(), '.git'))) return 'git';
-        if (existsSync('/.dockerenv')) return 'docker';
-        try {
-            const cgroup = readFileSync('/proc/1/cgroup', 'utf-8');
-            if (cgroup.includes('docker') || cgroup.includes('containerd')) return 'docker';
-        } catch {}
-        if (process.platform === 'android') return 'termux';
     } catch {}
     return 'unknown';
 })();
@@ -2037,22 +2020,12 @@ async function migrateInlaysToFilesystem() {
     await fs.writeFile(inlayMigrationMarker, new Date().toISOString(), 'utf-8');
 }
 
-async function fetchLatestRelease(lang) {
+async function fetchLatestRelease() {
     if (UPDATE_CHECK_DISABLED) return null;
     try {
         const currentVersion = getCurrentVersion();
-        const params = new URLSearchParams({
-            v: currentVersion,
-            d: deploymentType,
-            os: `${process.platform}-${process.arch}`,
-            id: instanceId,
-        });
-        if (lang) params.set('l', String(lang).slice(0, 16));
-        const url = `${UPDATE_CHECK_URL}?${params}`;
-        const res = await fetch(url);
-        if (!res.ok) return null;
-        const data = await res.json();
-        if (data.hasUpdate) {
+        const data = await fetchGitHubRelease(currentVersion);
+        if (data?.hasUpdate) {
             console.log(`[Update] New version available: v${data.latestVersion} (current: v${currentVersion}, ${data.severity})`);
         }
         return data;
@@ -3765,7 +3738,8 @@ async function hubProxyFunc(req, res) {
     const excludedHeaders = [
         'content-encoding',
         'content-length',
-        'transfer-encoding'
+        'transfer-encoding',
+        'set-cookie'
     ];
 
     try {
@@ -3777,25 +3751,17 @@ async function hubProxyFunc(req, res) {
             return;
         }
 
-        const headersToSend = { ...req.headers };
-        delete headersToSend.host;
-        delete headersToSend.connection;
-        delete headersToSend['content-length'];
-        delete headersToSend['x-risu-node-path'];
-        delete headersToSend['risu-auth'];
-        delete headersToSend.cookie;
-
+        const headersToSend = normalizeHubRequestHeaders(req.headers);
         headersToSend.origin = hubOrigin;
 
         //if Authorization header is "Server-Auth, set the token to be Server-Auth
-        if(headersToSend['Authorization'] === 'X-Node-Server-Auth'){
+        if(headersToSend.authorization === 'X-Node-Server-Auth'){
             //this requires password auth
             if(!await checkAuth(req, res)){
                 return;
             }
 
-            headersToSend['Authorization'] = "Bearer " + await getSionywAccessToken();
-            delete headersToSend['risu-auth'];
+            headersToSend.authorization = "Bearer " + await getSionywAccessToken();
         }
         
         
@@ -8854,21 +8820,10 @@ app.post('/api/inlays/compress', sessionAuthMiddleware, async (req, res) => {
     res.end();
 });
 
-// ── Public stats proxy ───────────────────────────────────────────────────────
-app.get('/api/public-stats', async (req, res) => {
-    try {
-        const r = await fetch(PUBLIC_STATS_URL);
-        if (!r.ok) { res.status(r.status).json({ error: 'upstream error' }); return; }
-        const data = await r.json();
-        res.json(data);
-    } catch {
-        res.status(502).json({ error: 'fetch failed' });
-    }
-});
-
 // ── Supporters proxy (Patreon list via update worker) ───────────────────────
-const SUPPORTERS_URL = UPDATE_CHECK_URL.replace(/\/check$/, '/supporters');
-const SUPPORTER_NAME_URL = UPDATE_CHECK_URL.replace(/\/check$/, '/patreon/name');
+// Requested only when the user opens the support dialog.
+const SUPPORTERS_URL = 'https://risu-update-worker.nodridan.workers.dev/supporters';
+const SUPPORTER_NAME_URL = 'https://risu-update-worker.nodridan.workers.dev/patreon/name';
 let supportersCache = { at: 0, data: null };
 app.get('/api/supporters', async (req, res) => {
     if (UPDATE_CHECK_DISABLED) { res.json({ disabled: true, supporters: [], tiers: [] }); return; }
@@ -8892,7 +8847,7 @@ app.get('/api/update-check', async (req, res) => {
         res.json({ currentVersion, hasUpdate: false, severity: 'none', disabled: true, deploymentType, canSelfUpdate: false });
         return;
     }
-    const result = await fetchLatestRelease(req.query.lang);
+    const result = await fetchLatestRelease();
     const response = result || { currentVersion, hasUpdate: false, severity: 'none' };
     response.deploymentType = deploymentType;
     response.canSelfUpdate = deploymentType === 'portable'

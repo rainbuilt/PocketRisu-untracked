@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="PocketRisu/PocketRisu"
+REPO="rainbuilt/PocketRisu-untracked"
 INSTALL_DIR="${RISU_INSTALL_DIR:-$HOME/pocketrisu}"
 PORT="${PORT:-6001}"
 

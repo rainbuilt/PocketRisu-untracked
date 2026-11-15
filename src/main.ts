@@ -1,5 +1,6 @@
 import "./ts/polyfill";
 import "core-js/actual"
+import "katex/dist/katex.min.css"
 import "./ts/log-capture"
 import "./ts/storage/database.svelte"
 import App from "./App.svelte";
