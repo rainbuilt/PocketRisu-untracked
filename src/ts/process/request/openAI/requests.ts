@@ -498,9 +498,7 @@ export async function requestOpenAI(arg:RequestDataArgumentExtended):Promise<req
         replacerURL = arg.modelInfo.endpoint
     }
 
-    let risuIdentify = false
     if(replacerURL.startsWith("risu::")){
-        risuIdentify = true
         replacerURL = replacerURL.replace("risu::", '')
     }
 
@@ -529,15 +527,8 @@ export async function requestOpenAI(arg:RequestDataArgumentExtended):Promise<req
     if(arg.modelInfo?.keyIdentifier){
         headers["Authorization"] = "Bearer " + db.OaiCompAPIKeys[arg.modelInfo.keyIdentifier]
     }
-    if(aiModel === 'openrouter'){
-        headers["X-Title"] = 'PocketRisu'
-        headers["HTTP-Referer"] = 'https://github.com/PocketRisu/PocketRisu'
-    }
     if(aiModel === 'nanogpt' && db.nanogptProvider){
         headers["X-Provider"] = db.nanogptProvider
-    }
-    if(risuIdentify){
-        headers["X-Proxy-Risu"] = 'RisuAI'
     }
     if(arg.multiGen){
         // Check if tools are enabled - multiGen with tools is not supported
@@ -1010,9 +1001,7 @@ export async function requestOpenAIResponseAPI(arg:RequestDataArgumentExtended):
         requestURL = arg.modelInfo.endpoint
     }
 
-    let risuIdentify = false
     if(requestURL.startsWith("risu::")){
-        risuIdentify = true
         requestURL = requestURL.replace("risu::", '')
     }
 
@@ -1064,10 +1053,6 @@ export async function requestOpenAIResponseAPI(arg:RequestDataArgumentExtended):
     const headers = {
         "Authorization": "Bearer " + (arg.key ?? db.openAIKey),
         "Content-Type": "application/json"
-    }
-
-    if(risuIdentify){
-        headers["X-Proxy-Risu"] = 'RisuAI'
     }
 
     if(arg.previewBody){

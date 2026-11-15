@@ -1,6 +1,6 @@
 import { writable, type Writable } from "svelte/store"
 import { alertCardExport, alertConfirm, alertError, alertInput, alertNormal, alertStore, alertTOS, alertWait, notifySuccess, notifyError } from "./alert"
-import { defaultSdDataFunc, type character, setDatabase, type customscript, type loreSettings, type loreBook, type triggerscript, importPreset, getDatabase, setDatabaseLite, appVer, newChatModelDefaults } from "./storage/database.svelte"
+import { defaultSdDataFunc, type character, setDatabase, type customscript, type loreSettings, type loreBook, type triggerscript, importPreset, getDatabase, setDatabaseLite, newChatModelDefaults } from "./storage/database.svelte"
 import { checkNullish, decryptBuffer, isKnownUri, selectFileByDom, sleep } from "./util"
 import { language } from "src/lang"
 import { v4 as uuidv4, v4 } from 'uuid';
@@ -1676,8 +1676,6 @@ export type hubType = {
     hidden?:boolean
 }
 
-export let hubAdditionalHTML = ''
-
 export async function getRisuHub(arg:{
     search:string,
     page:number,
@@ -1688,19 +1686,12 @@ export async function getRisuHub(arg:{
         arg.search += ' __shared'
         const stringArg = `search==${arg.search}&&page==${arg.page}&&nsfw==${arg.nsfw}&&sort==${arg.sort}&&web==other`
 
-        const da = await fetch(hubURL + '/realm/' + encodeURIComponent(stringArg) + "?cache=30", {
-            headers: {
-                "x-risuai-info": appVer + ';node'
-            }
-        })
+        const da = await fetch(hubURL + '/realm/' + encodeURIComponent(stringArg) + "?cache=30")
         if(da.status !== 200){
             return []
         }
         const jso = await da.json()
         const cards:hubType[] = Array.isArray(jso) ? jso : jso.cards
-        if(!Array.isArray(jso)){
-            hubAdditionalHTML = jso.additionalHTML || hubAdditionalHTML
-        }
         return filterBlockedRealmCards(cards, DBState.db.blockedRealmCreators ?? [])
     } catch (error) {
         return[]

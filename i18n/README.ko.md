@@ -75,6 +75,15 @@ PocketRisu는 [RisuAI](https://github.com/kwaroran/RisuAI)에서 파생되어, �
 - **다국어 UI**: 한국어, 영어, 일본어, 중국어 등
 
 
+## 네트워크와 개인정보
+
+PocketRisu는 설치 ID, 접속자·방문자 수, 이용 통계를 외부로 보고하지 않습니다. 이전 버전의 `save/__instance_id` 파일은 시작 시 삭제합니다. 진단 로그와 토큰 사용량 통계는 자신의 서버에 보관합니다.
+
+업데이트는 GitHub의 공개 릴리스 정보를 조회한 뒤 설치 버전과 로컬에서 비교합니다. 설치 버전·운영체제·설치 방식·언어를 전송하지 않으며, `RISU_UPDATE_CHECK=false`로 조회를 끌 수 있습니다. 기존 집계 서버 설정인 `RISU_UPDATE_URL`은 더 이상 사용하지 않습니다. 후원 정보는 후원 창을 직접 열 때만 조회하고, UI 폰트와 수식 스타일은 로컬에서 제공합니다.
+
+AI 제공자, 모델 목록, Realm 다운로드 등 활성화한 기능에 필요한 통신은 유지합니다. 사용자가 설치한 플러그인과 외부 콘텐츠는 별도로 네트워크 요청을 할 수 있습니다.
+
+
 ## 커뮤니티 & 연락처
 
 - 버그 리포트 / 기능 제안: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)

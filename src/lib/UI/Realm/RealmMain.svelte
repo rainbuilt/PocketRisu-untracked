@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { downloadRisuHub, getRisuHub, hubAdditionalHTML, type hubType } from "src/ts/characterCards";
+    import { downloadRisuHub, getRisuHub, type hubType } from "src/ts/characterCards";
     import { ArrowLeft, ArrowRight, MenuIcon, SearchIcon, XIcon } from "@lucide/svelte";
     import { alertInput } from "src/ts/alert";
     import { language } from "src/lang";
@@ -143,7 +143,6 @@
         </button>
     </div>
 {/if}
-{@html hubAdditionalHTML}
 <div class="w-full flex gap-4 p-2 flex-wrap justify-center">
     {#key charas}
         {#each charas as chara}

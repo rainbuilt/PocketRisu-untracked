@@ -7,13 +7,12 @@
     import GithubIcon from "./GithubIcon.svelte";
     import { getVersionString, openURL } from "src/ts/globalApi.svelte";
     import { language } from "src/lang";
-    import { getRisuHub, hubAdditionalHTML } from "src/ts/characterCards";
+    import { getRisuHub } from "src/ts/characterCards";
     import RisuHubIcon from "./Realm/RealmHubIcon.svelte";
     import RealmTosGate from "./Realm/RealmTosGate.svelte";
     import { risuTosAccepted } from "src/ts/alert";
     import Title from "./Title.svelte";
     import { updateInfoStore, updatePopupStore } from "src/ts/update";
-    import { publicStatsStore } from "src/ts/publicStats";
     import { isSecureContext } from "src/ts/secureContext";
     import { openSettings, SettingsRoute } from "src/ts/routing";
     import ShButton from "./GUI/ShButton.svelte";
@@ -56,17 +55,6 @@
             {language.updateAvailable.replace('{{version}}', $updateInfoStore.latestVersion)}
           {/if}
         </button>
-      {/if}
-      {#if $publicStatsStore}
-      <div class="mt-3 flex gap-2 flex-wrap justify-center">
-        <span class="px-3 py-1 rounded-full text-xs bg-darkbg border border-selected text-textcolor2">
-          👥 {language.statsUsersToday.replace('{{count}}', $publicStatsStore.dau.toLocaleString())}
-          <span class="text-textcolor2/60">({language.statsYesterday.replace('{{count}}', $publicStatsStore.yesterdayDau.toLocaleString())})</span>
-        </span>
-        <span class="px-3 py-1 rounded-full text-xs bg-darkbg border border-selected text-textcolor2">
-          📊 {language.statsVisitsToday.replace('{{count}}', $publicStatsStore.visits.toLocaleString())}
-        </span>
-      </div>
       {/if}
     {/if}
     <div class="w-full flex p-4 flex-col text-textcolor max-w-4xl">
@@ -149,7 +137,6 @@
                 sort: 'recommended'
             }) then charas}
             {#if charas.length > 0}
-              {@html hubAdditionalHTML}
               <div class="w-full flex gap-4 p-2 flex-wrap justify-center">
                   {#each charas as chara}
                       <RisuHubIcon onClick={() => {

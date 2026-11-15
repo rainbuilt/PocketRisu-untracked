@@ -17,7 +17,7 @@
             e.stopPropagation();
             openURL(`https://creativecommons.org/licenses/${CCLicenseData[license][0]}/4.0/`)
         })}>
-            <img alt="creative commons" class="cc" src="https://i.creativecommons.org/l/{CCLicenseData[license][0]}/4.0/88x31.png" />
+            <span aria-hidden="true" class="inline-flex h-8 items-center rounded border border-textcolor2 px-2 font-bold text-textcolor2">CC</span>
             <span class="text-textcolor2">
                 Licensed with {CCLicenseData[license][2]}
             </span>
@@ -25,12 +25,3 @@
         </div>
     </div>
 {/if}
-
-
-<style>
-    .cc{
-        width: 88px;
-        height: 31px;
-        border-width: 0;
-    }
-</style>

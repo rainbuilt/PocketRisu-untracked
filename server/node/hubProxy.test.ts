@@ -22,13 +22,15 @@ const realFetch = globalThis.fetch
 function hubResponse(url, init) {
     switch (url.pathname) {
         case '/echo':
-            return Response.json({ path: url.pathname, headers: Object.fromEntries(new Headers(init.headers)) })
+            return Response.json({ path: url.pathname, headers: Object.fromEntries(new Headers(init.headers)) }, {
+                headers: { 'set-cookie': 'hub-visitor=tracking-id; Path=/' },
+            })
         case '/redirect-out':
             return new Response(null, { status: 302, headers: { location: process.env.FAKE_HUB_OUTSIDE_URL } })
         case '/redirect-in':
-            return new Response(null, { status: 302, headers: { location: '/landed' } })
+            return new Response(null, { status: 302, headers: { location: '/landed', 'set-cookie': 'hub-visitor=redirect-id; Path=/' } })
         case '/landed':
-            return new Response('landed')
+            return new Response('landed', { headers: { 'set-cookie': 'hub-visitor=landing-id; Path=/' } })
         default:
             return new Response('not found', { status: 404 })
     }
@@ -145,20 +147,37 @@ describe('/hub-proxy', () => {
         expect(outsideHits).toBe(0)
     })
 
-    it('keeps the session cookie and risu-auth away from the hub', async () => {
+    it('keeps local credentials and client metadata away from the hub', async () => {
         const res = await fetch(`${base}/hub-proxy/echo`, {
             headers: {
                 cookie: 'risu-session=local-session',
                 'risu-auth': 'local-token',
-                'x-risuai-info': 'kept',
+                'x-risuai-info': 'private-app-version',
+                'user-agent': 'private-browser',
+                referer: 'https://private-server.example/chat',
+                'accept-language': 'ko-KR',
+                'sec-ch-ua': 'private-browser-version',
+                'x-forwarded-for': '192.0.2.1',
+                forwarded: 'for=192.0.2.1',
+                'x-real-ip': '192.0.2.1',
+                'x-risu-api-version': '4',
             },
         })
         expect(res.status).toBe(200)
         const { headers } = await res.json()
         expect(headers.cookie).toBeUndefined()
         expect(headers['risu-auth']).toBeUndefined()
-        expect(headers['x-risuai-info']).toBe('kept')
+        expect(headers['x-risuai-info']).toBeUndefined()
+        expect(headers['user-agent']).toBeUndefined()
+        expect(headers.referer).toBeUndefined()
+        expect(headers['accept-language']).toBeUndefined()
+        expect(headers['sec-ch-ua']).toBeUndefined()
+        expect(headers['x-forwarded-for']).toBeUndefined()
+        expect(headers.forwarded).toBeUndefined()
+        expect(headers['x-real-ip']).toBeUndefined()
+        expect(headers['x-risu-api-version']).toBe('4')
         expect(headers.origin).toBe('https://sv.risuai.xyz')
+        expect(res.headers.get('set-cookie')).toBeNull()
     })
 
     it('refuses a hub redirect to another origin without following it', async () => {
@@ -175,5 +194,6 @@ describe('/hub-proxy', () => {
         const res = await fetch(`${base}/hub-proxy/redirect-in`, { redirect: 'manual' })
         expect(res.status).toBe(200)
         expect(await res.text()).toBe('landed')
+        expect(res.headers.get('set-cookie')).toBeNull()
     })
 })
