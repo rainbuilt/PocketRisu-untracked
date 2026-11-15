@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="../LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -37,6 +37,21 @@ PocketRisu là một nền tảng trò chuyện nhập vai AI tự lưu trữ, c
   </table>
 </p>
 
+
+## Bản fork chú trọng quyền riêng tư
+
+PocketRisu Untracked dựa trên PocketRisu. Các nút và liên kết tài trợ, danh sách người ủng hộ cùng các yêu cầu mạng liên quan đã được xóa. Bản cập nhật và image container đến từ fork này. Nhật ký cục bộ và các kết nối phục vụ tính năng AI/Realm vẫn được giữ lại.
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## Tài liệu
 
@@ -77,9 +92,8 @@ PocketRisu được phát triển từ [RisuAI](https://github.com/kwaroran/Risu
 
 ## Cộng đồng & Liên hệ
 
-- Báo cáo lỗi / yêu cầu tính năng: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- Báo cáo lỗi / yêu cầu tính năng: [GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - Email: contact@pocketrisu.com
-- Ủng hộ dự án: [Patreon](https://patreon.com/PocketRisu/membership) — hoàn toàn tự nguyện; người ủng hộ có thể hiển thị tên trong ứng dụng, không có tính năng hay đặc quyền thêm
 
 
 ## Giấy phép

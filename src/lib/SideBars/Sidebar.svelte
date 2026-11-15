@@ -38,7 +38,6 @@
     User2Icon,
     ChevronsLeft,
     ArrowRight,
-    HeartIcon,
   } from "@lucide/svelte";
     import {
   addCharacter,
@@ -55,7 +54,6 @@
     import { v4 } from "uuid";
     import { checkCharOrder } from "src/ts/globalApi.svelte";
     import SideChatList from "./SideChatList.svelte";
-  import { supportDialogOpen } from "src/ts/support";
 
   import { sideBarSize } from "src/ts/gui/guisize";
   import DevTool from "./DevTool.svelte";
@@ -1180,17 +1178,6 @@
   {/if}
   {#if sideBarMode === 0}
     {#if $selectedCharID < 0 || $settingsOpen}
-      <!-- Same card rhythm as the recent-chat rows below (p-2.5, round leading badge). -->
-      <button
-        type="button"
-        class="mt-1 mb-1 flex w-full items-center gap-2 rounded-md border border-borderc/10 bg-darkbg px-2 py-1.5 text-left transition-colors hover:border-borderc/30 hover:bg-selected/50"
-        onclick={() => supportDialogOpen.set(true)}
-      >
-        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-          <HeartIcon size={13} />
-        </span>
-        <span class="truncate text-sm font-medium text-textcolor">{language.supportBanner}</span>
-      </button>
       <span class="block text-base font-semibold text-textcolor mt-2">{language.recentChatsTitle}</span>
       {#if DBState.db.nodeOnlyHideRecentChats}
         <!-- list hidden by user preference -->

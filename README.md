@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -35,6 +35,21 @@ PocketRisu is a self-hosted AI roleplay chat platform you run on your PC or pers
   </table>
 </p>
 
+
+## Privacy-focused fork
+
+PocketRisu Untracked is based on PocketRisu. Sponsorship buttons, links, supporter lists, and their external requests have been removed. Updates and container images come from this fork. Local logs and functional AI/Realm requests remain available.
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## Documentation
 
@@ -79,16 +94,15 @@ For migration from an existing RisuAI installation, see the [migration guide](do
 
 PocketRisu does not report installation IDs, active users, visits, or usage analytics. Older `save/__instance_id` files are removed at startup. Diagnostic logs and token usage statistics stay on your own server.
 
-Update checks read public GitHub release metadata and compare versions locally, without sending your installed version, operating system, installation type, or language. Set `RISU_UPDATE_CHECK=false` to disable these checks. The former `RISU_UPDATE_URL` telemetry-worker override is no longer used. Supporter information is fetched only when you open the support dialog; UI fonts and math styles are served locally.
+Update checks read public GitHub release metadata and compare versions locally, without sending your installed version, operating system, installation type, or language. Set `RISU_UPDATE_CHECK=false` to disable these checks. The former `RISU_UPDATE_URL` telemetry-worker override is no longer used. UI fonts and math styles are served locally. Sponsorship UI, links, lists, and their external requests are removed.
 
 AI providers, model catalogs, Realm downloads, and other enabled integrations still use the network for their features. User-installed plugins and remote content can make their own requests.
 
 
 ## Community & Contact
 
-- Bug reports / feature requests: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- Bug reports / feature requests: [GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - Email: contact@pocketrisu.com
-- Support the project: [Patreon](https://patreon.com/PocketRisu/membership) — entirely optional; supporters can have their name listed in the app, with no extra features or perks
 
 
 ## License

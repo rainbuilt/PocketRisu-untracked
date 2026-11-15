@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="../LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -37,6 +37,21 @@ PocketRisu ist eine selbstgehostete KI-Rollenspiel-Chat-Plattform, die Sie auf I
   </table>
 </p>
 
+
+## Datenschutzorientierter Fork
+
+PocketRisu Untracked basiert auf PocketRisu. Spenden-Buttons, Links, Unterstützerlisten und zugehörige externe Anfragen wurden entfernt. Updates und Container-Images stammen aus diesem Fork. Lokale Protokolle und funktionale AI-/Realm-Anfragen bleiben erhalten.
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## Dokumentation
 
@@ -77,9 +92,8 @@ Für die Migration von einer bestehenden RisuAI-Installation siehe den [Migratio
 
 ## Community & Kontakt
 
-- Fehlerberichte / Funktionswünsche: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- Fehlerberichte / Funktionswünsche: [GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - E-Mail: contact@pocketrisu.com
-- Projekt unterstützen: [Patreon](https://patreon.com/PocketRisu/membership) — völlig freiwillig; Unterstützer können ihren Namen in der App anzeigen lassen, es gibt keine zusätzlichen Funktionen oder Vorteile
 
 
 ## Lizenz

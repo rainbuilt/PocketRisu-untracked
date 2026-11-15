@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="../LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -37,6 +37,21 @@ PocketRisu 是一个自托管的 AI 角色扮演聊天平台,您可以在自己�
   </table>
 </p>
 
+
+## 注重隐私的分支
+
+PocketRisu Untracked 基于 PocketRisu，已移除赞助按钮、链接、赞助者名单及相关外部请求。更新和容器镜像由此分支提供。本地日志和 AI、Realm 功能所需的通信保持可用。
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## 文档
 
@@ -77,9 +92,8 @@ PocketRisu 派生自 [RisuAI](https://github.com/kwaroran/RisuAI),针对自托�
 
 ## 社区与联系
 
-- 错误报告/功能请求:[GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- 错误报告/功能请求:[GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - 邮箱:contact@pocketrisu.com
-- 支持项目:[Patreon](https://patreon.com/PocketRisu/membership) — 完全自愿;支持者可在应用内展示名字,没有额外功能或特权
 
 
 ## 许可证

@@ -1,21 +1,21 @@
-## PocketRisu Untracked v1.17.1
+## PocketRisu Untracked v1.17.2
 
-First privacy-focused release of rainbuilt/PocketRisu-untracked, based on PocketRisu 1.17.0.
+Sponsorship-free update for rainbuilt/PocketRisu-untracked.
 
-- Remove persistent installation IDs, visit/user counters, and developer-bound usage reporting.
-- Compare releases locally against this fork's GitHub releases, without sending installation details.
-- Remove optional app attribution and Realm browser/IP metadata forwarding.
-- Serve math styles/fonts locally and fetch supporter information only on explicit opening.
-- Preserve chat, AI providers, local diagnostics, data storage, backups, and portable updates.
+- Remove all built-in sponsorship buttons, links, supporter lists, and name registration UI.
+- Delete the supporter client, server proxy/cache, and external service URLs; the removed API returns 404 without making outbound requests.
+- Remove GitHub funding configuration and unused translations in all seven languages.
+- Update all current READMEs with fork release links, sponsorship removal details, and Podman instructions.
+- Preserve the previous telemetry removal and normal chat, storage, backup, and update functionality.
 
 ### Podman (Linux amd64 / arm64)
 
 ```sh
-podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.1
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
 podman volume create pocketrisu-save
 podman run -d --name pocketrisu-untracked --restart=unless-stopped \
   -p 6001:6001 -v pocketrisu-save:/app/save \
-  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.1
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
 ```
 
 Open `http://YOUR_MINIPC_IP:6001`. The named volume retains data when the container is replaced. Use the existing save volume instead when migrating an installation, and back it up before migration.

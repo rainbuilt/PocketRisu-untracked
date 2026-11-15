@@ -86,8 +86,8 @@ describe('update privacy', () => {
         expect(fs.readFileSync(path.join(tmpDir, 'save', 'keep-me'), 'utf8')).toBe('user data')
     })
 
-    it('has no public user-count proxy', async () => {
-        expect((await fetch(`${base}/api/public-stats`)).status).toBe(404)
+    it.each(['/api/public-stats', '/api/supporters'])('does not proxy removed reporting or sponsorship endpoint %s', async (endpoint) => {
+        expect((await fetch(`${base}${endpoint}`)).status).toBe(404)
         expect(outboundRequests()).toEqual([])
     })
 
