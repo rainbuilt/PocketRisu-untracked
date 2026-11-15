@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="../LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -37,6 +37,21 @@ PocketRisu es una plataforma de chat de roleplay con IA autoalojada que se ejecu
   </table>
 </p>
 
+
+## Fork centrado en la privacidad
+
+PocketRisu Untracked se basa en PocketRisu. Se eliminaron los botones y enlaces de donación, las listas de colaboradores y sus solicitudes externas. Las actualizaciones y las imágenes de contenedor provienen de este fork. Se mantienen los registros locales y las solicitudes funcionales de IA y Realm.
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## Documentación
 
@@ -77,9 +92,8 @@ Para migrar desde una instalación existente de RisuAI, consulta la [guía de mi
 
 ## Comunidad y contacto
 
-- Reportes de errores / solicitudes de funciones: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- Reportes de errores / solicitudes de funciones: [GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - Correo electrónico: contact@pocketrisu.com
-- Apoyar el proyecto: [Patreon](https://patreon.com/PocketRisu/membership) — totalmente opcional; quienes apoyan pueden mostrar su nombre en la app, sin funciones ni ventajas adicionales
 
 
 ## Licencia

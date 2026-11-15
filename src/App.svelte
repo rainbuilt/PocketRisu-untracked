@@ -35,7 +35,6 @@
     import PluginAlertModal from './lib/Others/PluginAlertModal.svelte';
     import PopupEditor from './lib/Others/PopupEditor.svelte';
     import UpdatePopup from './lib/Others/UpdatePopup.svelte';
-    import SupportDialog from './lib/Others/SupportDialog.svelte';
     import ProtonImportDialog from './lib/Others/ProtonImportDialog.svelte';
     import BootBackupPrompt from './lib/Others/BootBackupPrompt.svelte';
     import PopupList from './lib/UI/PopupList.svelte';
@@ -279,7 +278,6 @@
     <PluginAlertModal />
     <LoadingOverlay />
     <UpdatePopup />
-    <SupportDialog />
     <ProtonImportDialog />
     <BootBackupPrompt />
     {#if popupStore.children}

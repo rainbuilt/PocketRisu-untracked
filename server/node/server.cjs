@@ -8820,26 +8820,6 @@ app.post('/api/inlays/compress', sessionAuthMiddleware, async (req, res) => {
     res.end();
 });
 
-// ── Supporters proxy (Patreon list via update worker) ───────────────────────
-// Requested only when the user opens the support dialog.
-const SUPPORTERS_URL = 'https://risu-update-worker.nodridan.workers.dev/supporters';
-const SUPPORTER_NAME_URL = 'https://risu-update-worker.nodridan.workers.dev/patreon/name';
-let supportersCache = { at: 0, data: null };
-app.get('/api/supporters', async (req, res) => {
-    if (UPDATE_CHECK_DISABLED) { res.json({ disabled: true, supporters: [], tiers: [] }); return; }
-    if (supportersCache.data && Date.now() - supportersCache.at < 60_000) { res.json(supportersCache.data); return; }
-    try {
-        const r = await fetch(SUPPORTERS_URL);
-        if (!r.ok) { res.status(r.status).json({ error: 'upstream error' }); return; }
-        const data = await r.json();
-        data.nameUrl = SUPPORTER_NAME_URL;
-        supportersCache = { at: Date.now(), data };
-        res.json(data);
-    } catch {
-        res.status(502).json({ error: 'fetch failed' });
-    }
-});
-
 // ── Update check endpoint ────────────────────────────────────────────────────
 app.get('/api/update-check', async (req, res) => {
     const currentVersion = getCurrentVersion();

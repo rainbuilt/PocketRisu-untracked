@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PocketRisu/PocketRisu/releases">
-    <img alt="Latest Release" src="https://img.shields.io/github/v/release/PocketRisu/PocketRisu?label=latest" />
+  <a href="https://github.com/rainbuilt/PocketRisu-untracked/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rainbuilt/PocketRisu-untracked?label=latest" />
   </a>
   <a href="../LICENSE">
-    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/PocketRisu/PocketRisu" />
+    <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/rainbuilt/PocketRisu-untracked" />
   </a>
   <a href="https://nodejs.org/">
     <img alt="Node" src="https://img.shields.io/badge/node-≥22.12-brightgreen" />
@@ -35,6 +35,21 @@ PocketRisu는 PC나 개인 서버에 띄워두고, PC·태블릿·스마트폰 �
   </table>
 </p>
 
+
+## 개인정보 보호 포크
+
+PocketRisu Untracked는 PocketRisu를 기반으로 합니다. 후원 버튼·링크·후원자 목록과 관련 외부 통신을 제거했습니다. 업데이트와 컨테이너 이미지는 이 포크에서 제공하며, 로컬 로그와 AI·Realm 기능 통신은 유지합니다.
+
+[Releases](https://github.com/rainbuilt/PocketRisu-untracked/releases) · [Container](https://github.com/rainbuilt/PocketRisu-untracked/pkgs/container/pocketrisu-untracked)
+
+```sh
+podman pull ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+podman run -d --name pocketrisu-untracked --restart=unless-stopped \
+  -p 6001:6001 -v pocketrisu-save:/app/save \
+  ghcr.io/rainbuilt/pocketrisu-untracked:v1.17.2
+```
+
+`http://YOUR_MINIPC_IP:6001` · `linux/amd64`, `linux/arm64`
 
 ## 문서
 
@@ -79,16 +94,15 @@ PocketRisu는 [RisuAI](https://github.com/kwaroran/RisuAI)에서 파생되어, �
 
 PocketRisu는 설치 ID, 접속자·방문자 수, 이용 통계를 외부로 보고하지 않습니다. 이전 버전의 `save/__instance_id` 파일은 시작 시 삭제합니다. 진단 로그와 토큰 사용량 통계는 자신의 서버에 보관합니다.
 
-업데이트는 GitHub의 공개 릴리스 정보를 조회한 뒤 설치 버전과 로컬에서 비교합니다. 설치 버전·운영체제·설치 방식·언어를 전송하지 않으며, `RISU_UPDATE_CHECK=false`로 조회를 끌 수 있습니다. 기존 집계 서버 설정인 `RISU_UPDATE_URL`은 더 이상 사용하지 않습니다. 후원 정보는 후원 창을 직접 열 때만 조회하고, UI 폰트와 수식 스타일은 로컬에서 제공합니다.
+업데이트는 GitHub의 공개 릴리스 정보를 조회한 뒤 설치 버전과 로컬에서 비교합니다. 설치 버전·운영체제·설치 방식·언어를 전송하지 않으며, `RISU_UPDATE_CHECK=false`로 조회를 끌 수 있습니다. 기존 집계 서버 설정인 `RISU_UPDATE_URL`은 더 이상 사용하지 않습니다. 후원 UI·링크·목록과 관련 외부 요청은 제거했으며, UI 폰트와 수식 스타일은 로컬에서 제공합니다.
 
 AI 제공자, 모델 목록, Realm 다운로드 등 활성화한 기능에 필요한 통신은 유지합니다. 사용자가 설치한 플러그인과 외부 콘텐츠는 별도로 네트워크 요청을 할 수 있습니다.
 
 
 ## 커뮤니티 & 연락처
 
-- 버그 리포트 / 기능 제안: [GitHub Issues](https://github.com/PocketRisu/PocketRisu/issues)
+- 버그 리포트 / 기능 제안: [GitHub Issues](https://github.com/rainbuilt/PocketRisu-untracked/issues)
 - 이메일: contact@pocketrisu.com
-- 후원: [Patreon](https://patreon.com/PocketRisu/membership) — 전적으로 자유이며, 후원자 이름 게시 외에 추가 기능이나 혜택은 없습니다
 
 
 ## 라이선스
