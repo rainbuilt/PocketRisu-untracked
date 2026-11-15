@@ -1,4 +1,4 @@
-const GITHUB_REPO = 'PocketRisu/PocketRisu';
+const GITHUB_REPO = 'rainbuilt/PocketRisu-untracked';
 const LATEST_RELEASE_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 
 function parseVersion(version) {

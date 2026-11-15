@@ -101,7 +101,7 @@ describe('update privacy', () => {
             severity: 'optional', deploymentType: 'portable', canSelfUpdate: true,
         })
         expect(outboundRequests()).toEqual([{
-            url: 'https://api.github.com/repos/PocketRisu/PocketRisu/releases/latest',
+            url: 'https://api.github.com/repos/rainbuilt/PocketRisu-untracked/releases/latest',
             headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'PocketRisu' },
         }])
         expect(fs.existsSync(path.join(tmpDir, 'save', '__instance_id'))).toBe(false)

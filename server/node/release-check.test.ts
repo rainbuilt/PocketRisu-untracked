@@ -14,12 +14,12 @@ describe('release checks', () => {
             latestVersion: '1.18.0',
             hasUpdate: true,
             severity: 'optional',
-            releaseUrl: 'https://github.com/PocketRisu/PocketRisu/releases/tag/v1.18.0',
+            releaseUrl: 'https://github.com/rainbuilt/PocketRisu-untracked/releases/tag/v1.18.0',
             releaseName: 'PocketRisu 1.18.0',
             publishedAt: '2026-11-16T00:00:00Z',
         })
         expect(fetchImpl).toHaveBeenCalledExactlyOnceWith(
-            'https://api.github.com/repos/PocketRisu/PocketRisu/releases/latest',
+            'https://api.github.com/repos/rainbuilt/PocketRisu-untracked/releases/latest',
             {
                 headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'PocketRisu' },
                 signal: expect.any(AbortSignal),
